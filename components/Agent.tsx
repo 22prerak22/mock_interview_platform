@@ -19,7 +19,12 @@ const Agent = ({ userName }: AgentProps) => {
   ];
   const lastMessage = messages[messages.length - 1];
 
-  const handleCall = () => {};
+  const handleCall = () => {
+    setCallStatus(CallStatus.CONNECTING);
+    setTimeout(() => {
+      setCallStatus(CallStatus.ACTIVE);
+    }, 2000); // Simulate a delay for connecting
+  };
   const handleDisconnect = () => {};
 
   return (
