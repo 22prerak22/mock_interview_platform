@@ -8,8 +8,8 @@ const firebaseConfig = {
   projectId: "prepwise-19d71",
   storageBucket: "prepwise-19d71.firebasestorage.app",
   messagingSenderId: "1091587621325",
-  appId: "1:1091587621325:web:2a886a44ef7e13636e0484",
-  measurementId: "G-K3HZCPPZ5J",
+  appId: "1:1091587621325:web:4a76b6c488ae2e7c6e0484",
+  measurementId: "G-BB61P5N2C4",
 };
 
 // Initialize Firebase
