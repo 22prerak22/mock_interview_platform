@@ -11,11 +11,11 @@ enum CallStatus {
   ACTIVE = "ACTIVE",
   FINISHED = "FINISHED",
 }
+
 interface SavedMessage {
   role: "user" | "system" | "assistant";
   content: string;
 }
-
 const Agent = ({ userName, userId, type }: AgentProps) => {
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
@@ -23,17 +23,34 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
-    const onCallEnd = () => setCallStatus(CallStatus.FINISHED);
+    const onCallStart = () => {
+      setCallStatus(CallStatus.ACTIVE);
+    };
+
+    const onCallEnd = () => {
+      setCallStatus(CallStatus.FINISHED);
+    };
+
     const onMessage = (message: Message) => {
       if (message.type === "transcript" && message.transcriptType === "final") {
         const newMessage = { role: message.role, content: message.transcript };
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
+        setMessages((prev) => [...prev, newMessage]);
       }
     };
-    const onSpeechStart = () => setIsSpeaking(true);
-    const onSpeechEnd = () => setIsSpeaking(false);
-    const onError = (error: Error) => console.error("Error:", error);
+
+    const onSpeechStart = () => {
+      console.log("speech start");
+      setIsSpeaking(true);
+    };
+
+    const onSpeechEnd = () => {
+      console.log("speech end");
+      setIsSpeaking(false);
+    };
+
+    const onError = (error: Error) => {
+      console.log("Error:", error);
+    };
 
     vapi.on("call-start", onCallStart);
     vapi.on("call-end", onCallEnd);
@@ -51,10 +68,6 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
       vapi.off("error", onError);
     };
   }, []);
-  // const messages = [
-  //   "Whats your name?",
-  //   "My name is John Doe, nice to meet you!",
-  // ];
 
   useEffect(() => {
     if (callStatus === CallStatus.FINISHED) router.push(`/`);
@@ -64,8 +77,8 @@ const Agent = ({ userName, userId, type }: AgentProps) => {
     setCallStatus(CallStatus.CONNECTING);
     await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
       variableValues: {
-        userName: userName,
-        userId: userId,
+        username: userName,
+        userid: userId,
       },
     });
   };
