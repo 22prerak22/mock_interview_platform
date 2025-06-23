@@ -8,15 +8,13 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
   if (!isUserAuthenticated) redirect("/sign-in");
 
-  const onLogoClick = () => {
-    redirect("/");
-  };
-
   return (
     <div className="root-layout">
-      <nav>
-        <Link href="/" className="flex items-center gap-2"></Link>
+      <nav className="flex gap-4 text-white">
         <Image src="/logo.svg" alt="Logo" width={38} height={32} />
+        <Link href="/" className="flex items-center gap-2">
+          <h3>Home</h3>
+        </Link>
       </nav>
       {children}
     </div>
